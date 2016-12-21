@@ -1,0 +1,35 @@
+env.MyPro = "${ProjectName}m"
+
+node {
+    stage ('dockerfile')
+        dir('Dockerfile') {
+            sh """
+                if [ -f Dockerfile ];then
+                    rm -f Dockerfile
+                    cp Dockerfile-Template Dockerfile
+                else
+                    cp Dockerfile-Template Dockerfile
+                fi
+                sed -i "s/ENV MyPro ProjectName/ENV MyPro ${ProjectName}/g" Dockerfile
+                sed -i "s/ENV MyProWeb app-ProjectName/ENV MyProWeb app-${ProjectName}/g" Dockerfile
+                cp nginx_config/template.conf nginx_config/mtest.${ProjectName}.com.conf
+                sed -i "s/template/${ProjectName}/g" nginx_config/mtest.${ProjectName}.com.conf
+            """
+        }
+    
+    stage("Checkout PHP")
+        dir("${MyPro}/app-${ProjectName}") {
+            git branch: '$ProjectBranch', url: '$ProjectURL'
+        }
+    
+    stage('checkout common')
+        dir("${MyPro}/common") {
+            git branch: '$CommonBranch', url: '$Common'
+        }
+    
+    stage('Integration')
+        sh "rsync -az ${MyPro} Dockerfile root@${server}:/data/docker/${MyPro}"
+    
+    stage('Build')
+        sh 'ssh -oUserKnownHostsFile=/dev/null -oStrictHostKeyChecking=no root@${Server} "/bin/bash /data/docker/${MyPro}/Dockerfile/bin/test_run_container.sh ${ProjectName} ${ProjectBranch}"'
+}
