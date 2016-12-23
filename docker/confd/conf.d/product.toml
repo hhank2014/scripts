@@ -1,0 +1,8 @@
+[template]
+src = "product.toml"
+dest = "/etc/nginx/conf.d/product.api.tomtop.com.conf"
+keys = [
+    "/product"
+]
+check_cmd = "/usr/sbin/nginx -t"
+reload_cmd = "/usr/sbin/nginx -s reload"

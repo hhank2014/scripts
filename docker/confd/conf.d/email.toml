@@ -1,0 +1,8 @@
+[template]
+src = "email.toml"
+dest = "/etc/nginx/conf.d/email.api.tomtop.com.conf"
+keys = [
+    "/email"
+]
+check_cmd = "/usr/sbin/nginx -t"
+reload_cmd = "/usr/sbin/nginx -s reload"

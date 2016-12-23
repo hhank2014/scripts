@@ -1,0 +1,8 @@
+[template]
+src = "test.interougehome.com.toml"
+dest = "/etc/nginx/conf.d/test.interougehome.com.conf"
+keys = [
+    "/interougehomewww"
+]
+check_cmd = "/usr/sbin/nginx -t"
+reload_cmd = "/usr/sbin/nginx -s reload"

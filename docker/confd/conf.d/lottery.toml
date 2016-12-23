@@ -1,0 +1,8 @@
+[template]
+src = "lottery.toml"
+dest = "/etc/nginx/conf.d/lottery.api.tomtop.com.conf"
+keys = [
+    "/lottery"
+]
+check_cmd = "/usr/sbin/nginx -t"
+reload_cmd = "/usr/sbin/nginx -s reload"

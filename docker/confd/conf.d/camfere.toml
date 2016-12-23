@@ -1,0 +1,8 @@
+[template]
+src = "test.camfere.com.toml"
+dest = "/etc/nginx/conf.d/test.camfere.com.conf"
+keys = [
+    "/camferewww"
+]
+check_cmd = "/usr/sbin/nginx -t"
+reload_cmd = "/usr/sbin/nginx -s reload"

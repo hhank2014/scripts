@@ -1,0 +1,17 @@
+upstream product {
+    {{ range getvs "/product/*" }}
+        server {{ . }};
+    {{ end }} 
+}
+
+server {
+    listen 80;
+    server_name product.api.tomtop.com;
+
+    location / {
+        proxy_pass http://product;
+    }
+
+    access_log /data/logs/nginx/product.api.tomtop.com_access.log json;
+    error_log /data/logs/nginx/product.api.tomtop.com_error.log;
+}

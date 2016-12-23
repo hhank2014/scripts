@@ -1,0 +1,17 @@
+upstream index-search {
+    {{ range getvs "/index-search/*" }}
+        server {{ . }};
+    {{ end }} 
+}
+
+server {
+    listen 80;
+    server_name index-search.api.tomtop.com;
+
+    location / {
+        proxy_pass http://index-search;
+    }
+
+    access_log /data/logs/nginx/index-search.api.tomtop.com_access.log json;
+    error_log /data/logs/nginx/index-search.api.tomtop.com_error.log;
+}

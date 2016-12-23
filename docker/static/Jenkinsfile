@@ -1,0 +1,37 @@
+node {
+
+    stage("checkout static")
+        dir("${ProjectName}/src/${ProjectName}") {
+            git branch: '${ProjectBranch}', url: '${ProjectURL}'
+        }
+    
+    stage('checkout static common')
+        dir("${ProjectName}/src/common") {
+            git branch: '${CommonBranch}', url: '${Common}'
+        }
+        
+    stage("Checkout Dockerfile")
+	dir("${ProjectName}/Dockerfile"){
+	    git branch: '${DockerfileBranch}', url: '${Dockerfile}'
+	}
+
+    stage('Integration')
+        dir("${ProjectName}/Dockerfile") {
+            sh """
+
+                if [ -d src ];then
+                        rm -rf src
+                        mkdir src
+                else
+                        mkdir src
+                fi
+
+                cp -r ../src/* ./src/
+                rm -rf ../src
+            """
+        }
+    stage('Deploy')
+	dir("${ProjectName}/Dockerfile"){
+		sh "./bin/deploy.sh ${Server} ${ProjectName}"
+	}
+}

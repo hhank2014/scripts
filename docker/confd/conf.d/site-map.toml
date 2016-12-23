@@ -1,0 +1,8 @@
+[template]
+src = "site-map.toml"
+dest = "/etc/nginx/conf.d/site-map.api.tomtop.com.conf"
+keys = [
+    "/site-map"
+]
+check_cmd = "/usr/sbin/nginx -t"
+reload_cmd = "/usr/sbin/nginx -s reload"

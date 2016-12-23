@@ -1,0 +1,17 @@
+upstream zookeeper {
+    {{ range getvs "/zookeeper/*" }}
+        server {{ . }};
+    {{ end }} 
+}
+
+server {
+    listen 80;
+    server_name zookeeper.api.tomtop.com;
+
+    location / {
+        proxy_pass http://zookeeper;
+    }
+
+    access_log /data/logs/nginx/zookeeper.api.tomtop.com_access.log json;
+    error_log /data/logs/nginx/zookeeper.api.tomtop.com_error.log;
+}

@@ -1,0 +1,8 @@
+[template]
+src = "search-job.toml"
+dest = "/etc/nginx/conf.d/search-job.api.tomtop.com.conf"
+keys = [
+    "/search-job"
+]
+check_cmd = "/usr/sbin/nginx -t"
+reload_cmd = "/usr/sbin/nginx -s reload"

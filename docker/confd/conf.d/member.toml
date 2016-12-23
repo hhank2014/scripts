@@ -1,0 +1,8 @@
+[template]
+src = "member.toml"
+dest = "/etc/nginx/conf.d/member.api.tomtop.com.conf"
+keys = [
+    "/member"
+]
+check_cmd = "/usr/sbin/nginx -t"
+reload_cmd = "/usr/sbin/nginx -s reload"

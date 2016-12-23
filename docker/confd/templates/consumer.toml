@@ -1,0 +1,17 @@
+upstream consumer {
+    {{ range getvs "/consumer/*" }}
+        server {{ . }};
+    {{ end }} 
+}
+
+server {
+    listen 80;
+    server_name consumer.api.tomtop.com;
+
+    location / {
+        proxy_pass http://consumer;
+    }
+
+    access_log /data/logs/nginx/consumer.api.tomtop.com_access.log json;
+    error_log /data/logs/nginx/consumer.api.tomtop.com_error.log;
+}

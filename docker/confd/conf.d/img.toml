@@ -1,0 +1,8 @@
+[template]
+src = "img.toml"
+dest = "/etc/nginx/conf.d/img.api.tomtop.com.conf"
+keys = [
+    "/img"
+]
+check_cmd = "/usr/sbin/nginx -t"
+reload_cmd = "/usr/sbin/nginx -s reload"

@@ -1,0 +1,17 @@
+upstream advert {
+    {{ range getvs "/advert/*" }}
+        server {{ . }};
+    {{ end }} 
+}
+
+server {
+    listen 80;
+    server_name advert.api.tomtop.com;
+
+    location / {
+        proxy_pass http://advert;
+    }
+
+    access_log /data/logs/nginx/advert.api.tomtop.com_access.log json;
+    error_log /data/logs/nginx/advert.api.tomtop.com_error.log;
+}

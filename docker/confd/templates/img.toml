@@ -1,0 +1,17 @@
+upstream img {
+    {{ range getvs "/img/*" }}
+        server {{ . }};
+    {{ end }} 
+}
+
+server {
+    listen 80;
+    server_name img.api.tomtop.com;
+
+    location / {
+        proxy_pass http://img;
+    }
+
+    access_log /data/logs/nginx/img.api.tomtop.com_access.log json;
+    error_log /data/logs/nginx/img.api.tomtop.com_error.log;
+}

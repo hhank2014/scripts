@@ -1,0 +1,17 @@
+upstream recommend {
+    {{ range getvs "/recommend/*" }}
+        server {{ . }};
+    {{ end }} 
+}
+
+server {
+    listen 80;
+    server_name recommend.api.tomtop.com;
+
+    location / {
+        proxy_pass http://recommend;
+    }
+
+    access_log /data/logs/nginx/recommend.api.tomtop.com_access.log json;
+    error_log /data/logs/nginx/recommend.api.tomtop.com_error.log;
+}

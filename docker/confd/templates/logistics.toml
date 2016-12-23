@@ -1,0 +1,17 @@
+upstream logistics {
+    {{ range getvs "/logistics/*" }}
+        server {{ . }};
+    {{ end }} 
+}
+
+server {
+    listen 80;
+    server_name logistics.api.tomtop.com;
+
+    location / {
+        proxy_pass http://logistics;
+    }
+
+    access_log /data/logs/nginx/logistics.api.tomtop.com_access.log json;
+    error_log /data/logs/nginx/logistics.api.tomtop.com_error.log;
+}

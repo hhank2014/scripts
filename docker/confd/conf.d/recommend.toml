@@ -1,0 +1,8 @@
+[template]
+src = "recommend.toml"
+dest = "/etc/nginx/conf.d/recommend.api.tomtop.com.conf"
+keys = [
+    "/recommend"
+]
+check_cmd = "/usr/sbin/nginx -t"
+reload_cmd = "/usr/sbin/nginx -s reload"

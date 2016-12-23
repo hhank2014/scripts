@@ -1,0 +1,8 @@
+[template]
+src = "logistics.toml"
+dest = "/etc/nginx/conf.d/logistics.api.tomtop.com.conf"
+keys = [
+    "/logistics"
+]
+check_cmd = "/usr/sbin/nginx -t"
+reload_cmd = "/usr/sbin/nginx -s reload"

@@ -1,0 +1,57 @@
+upstream camferewww {
+    {{ range getvs "/camferewww/*" }}
+        server {{ . }};
+    {{ end }}
+}
+
+server {
+    listen 80;
+    server_name test.camfere.com;
+
+    access_log /data/logs/nginx/test.camfere.com_access.log  json;
+    error_log /data/logs/nginx/test.camfere.com_error.log;
+
+    if ($host = "camfere.com") {
+        rewrite ^/(.*)$ http://test.camfere.com/$1 permanent;
+    }
+
+    location / {
+        proxy_pass http://camferewww;
+    }
+
+    location /activity/ {
+        proxy_pass            http://www.tomtop.com;
+    }
+
+    location /sitemap.xml {
+        proxy_set_header Host s3-us-west-2.amazonaws.com;
+        proxy_pass     https://s3-us-west-2.amazonaws.com/sitemap.website.com/camfere/sitemap.xml;
+    }
+
+    location ^~ /sitemap/ {
+        proxy_set_header Host s3-us-west-2.amazonaws.com;
+        proxy_pass     https://s3-us-west-2.amazonaws.com/sitemap.website.com/camfere/sitemap/;
+    }
+}
+
+
+
+server {
+    listen 443;
+    server_name test.camfere.com;
+
+    ssl                  on;
+    ssl_certificate      server_camfere.pem;
+    ssl_certificate_key  server_camfere.key;
+    ssl_session_timeout  5m;
+    ssl_protocols  TLSv1 TLSv1.1 TLSv1.2;
+    ssl_ciphers  HIGH:!RC4:!MD5:!aNULL:!eNULL:!NULL:!DH:!EDH:!EXP:+MEDIUM;
+    ssl_prefer_server_ciphers   on;
+
+     location / {
+        proxy_pass http://camferewww;
+     }
+
+     access_log /data/logs/nginx/test.camfere.com_access.log  json;
+     error_log /data/logs/nginx/test.camfere.com_error.log;
+}

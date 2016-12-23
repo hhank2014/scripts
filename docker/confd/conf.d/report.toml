@@ -1,0 +1,8 @@
+[template]
+src = "report.toml"
+dest = "/etc/nginx/conf.d/report.api.tomtop.com.conf"
+keys = [
+    "/report"
+]
+check_cmd = "/usr/sbin/nginx -t"
+reload_cmd = "/usr/sbin/nginx -s reload"

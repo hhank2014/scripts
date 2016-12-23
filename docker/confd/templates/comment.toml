@@ -1,0 +1,17 @@
+upstream comment {
+    {{ range getvs "/comment/*" }}
+        server {{ . }};
+    {{ end }} 
+}
+
+server {
+    listen 80;
+    server_name comment.api.tomtop.com;
+
+    location / {
+        proxy_pass http://comment;
+    }
+
+    access_log /data/logs/nginx/comment.api.tomtop.com_access.log json;
+    error_log /data/logs/nginx/comment.api.tomtop.com_error.log;
+}

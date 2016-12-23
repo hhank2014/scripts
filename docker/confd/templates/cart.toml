@@ -1,0 +1,17 @@
+upstream cart {
+    {{ range getvs "/cart/*" }}
+        server {{ . }};
+    {{ end }} 
+}
+
+server {
+    listen 80;
+    server_name cart.api.tomtop.com;
+
+    location / {
+        proxy_pass http://cart;
+    }
+
+    access_log /data/logs/nginx/cart.api.tomtop.com_access.log json;
+    error_log /data/logs/nginx/cart.api.tomtop.com_error.log;
+}

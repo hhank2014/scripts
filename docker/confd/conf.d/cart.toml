@@ -1,0 +1,8 @@
+[template]
+src = "cart.toml"
+dest = "/etc/nginx/conf.d/cart.api.tomtop.com.conf"
+keys = [
+    "/cart"
+]
+check_cmd = "/usr/sbin/nginx -t"
+reload_cmd = "/usr/sbin/nginx -s reload"

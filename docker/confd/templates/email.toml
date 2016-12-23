@@ -1,0 +1,17 @@
+upstream email {
+    {{ range getvs "/email/*" }}
+        server {{ . }};
+    {{ end }} 
+}
+
+server {
+    listen 80;
+    server_name email.api.tomtop.com;
+
+    location / {
+        proxy_pass http://email;
+    }
+
+    access_log /data/logs/nginx/email.api.tomtop.com_access.log json;
+    error_log /data/logs/nginx/email.api.tomtop.com_error.log;
+}

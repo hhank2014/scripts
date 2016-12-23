@@ -1,0 +1,17 @@
+upstream site-map {
+    {{ range getvs "/site-map/*" }}
+        server {{ . }};
+    {{ end }} 
+}
+
+server {
+    listen 80;
+    server_name site-map.api.tomtop.com;
+
+    location / {
+        proxy_pass http://site-map;
+    }
+
+    access_log /data/logs/nginx/site-map.api.tomtop.com_access.log json;
+    error_log /data/logs/nginx/site-map.api.tomtop.com_error.log;
+}

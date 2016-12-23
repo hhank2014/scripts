@@ -1,0 +1,7 @@
+node {
+    stage("Checkout Confd")
+        git branch: "${Branch}", url: "${Confd}"
+        
+    stage("Rsync to ${Server}") 
+        sh 'rsync -avz --delete --partial --exclude=".git" --exclude="Jenkinsfile" -e "ssh -oUserKnownHostsFile=/dev/null -oStrictHostKeyChecking=no" ./ root@${Server}:/etc/confd |grep -v /$'
+}

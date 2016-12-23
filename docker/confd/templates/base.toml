@@ -1,0 +1,17 @@
+upstream base {
+    {{ range getvs "/base/*" }}
+        server {{ . }};
+    {{ end }} 
+}
+
+server {
+    listen 80;
+    server_name base.api.tomtop.com;
+
+    location / {
+        proxy_pass http://base;
+    }
+
+    access_log /data/logs/nginx/base.api.tomtop.com_access.log json;
+    error_log /data/logs/nginx/base.api.tomtop.com_error.log;
+}

@@ -1,0 +1,8 @@
+[template]
+src = "test.chicuu.com.toml"
+dest = "/etc/nginx/conf.d/test.chicuu.com.conf"
+keys = [
+    "/chicuuwww"
+]
+check_cmd = "/usr/sbin/nginx -t"
+reload_cmd = "/usr/sbin/nginx -s reload"

@@ -1,0 +1,8 @@
+[template]
+src = "comment.toml"
+dest = "/etc/nginx/conf.d/comment.api.tomtop.com.conf"
+keys = [
+    "/comment"
+]
+check_cmd = "/usr/sbin/nginx -t"
+reload_cmd = "/usr/sbin/nginx -s reload"

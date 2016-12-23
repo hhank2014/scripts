@@ -1,0 +1,45 @@
+env.MyPro = "${ProjectName}"
+
+env.MyProDir = "/data/Dockerfile/tomcat-${MyPro}"
+env.MyProCodeDir = "${MyProDir}/tomcat/webapps/ROOT/"
+
+node{
+
+    stage("Checkout ${ProjectName}")
+        dir("${ProjectName}/${ProjectName}") {
+            git branch: '${ProjectBranch}', url: '${ProjectURL}'
+        }
+
+    stage("Mvn Build")
+        dir("${ProjectName}/${ProjectName}") {
+        sh "mvn clean install -Dmaven.test.skip=true"
+        }
+
+    stage("Checkout Dockerfile")
+        dir("${ProjectName}/Dockerfile") {
+            git branch: '${DockerfileBranch}', url: '${Dockerfile}'
+        }
+
+    stage("Integration")
+        dir("${ProjectName}") {
+            sh """
+                unzip -o ./${ProjectName}/target/${ProjectName}.war \
+                -d ./Dockerfile/src/apache-tomcat-8.0.26/webapps/ROOT >/dev/null
+                cp ./Dockerfile/Dockerfile-Template ./Dockerfile/Dockerfile
+                cp ./Dockerfile/supervisor/template.conf ./Dockerfile/supervisor/${ProjectName}-supervisord.conf
+                sed -i 's/template/${ProjectName}/g' ./Dockerfile/Dockerfile
+                sed -i 's/template/${ProjectName}/g' ./Dockerfile/supervisor/${ProjectName}-supervisord.conf
+            """
+        }
+        
+    stage("Build")
+        dir("${ProjectName}/Dockerfile") {
+            def NewBuild = docker.build("192.168.221.134:5000/tomtop/${ProjectName}:${ProjectBranch}")
+            NewBuild.push()
+        }
+    stage("Depoy")
+        sh """
+            scp -oUserKnownHostsFile=/dev/null -oStrictHostKeyChecking=no ./${ProjectName}/Dockerfile/bin/run_container.sh root@${Server}:/tmp/run_container.sh
+            ssh -oUserKnownHostsFile=/dev/null -oStrictHostKeyChecking=no root@${Server} "/bin/bash /tmp/run_container.sh ${ProjectName} ${ProjectBranch}"
+        """
+ }

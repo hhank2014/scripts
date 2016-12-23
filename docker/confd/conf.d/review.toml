@@ -1,0 +1,8 @@
+[template]
+src = "review.toml"
+dest = "/etc/nginx/conf.d/review.api.tomtop.com.conf"
+keys = [
+    "/review"
+]
+check_cmd = "/usr/sbin/nginx -t"
+reload_cmd = "/usr/sbin/nginx -s reload"

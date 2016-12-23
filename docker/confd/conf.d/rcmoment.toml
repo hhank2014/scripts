@@ -1,0 +1,8 @@
+[template]
+src = "test.rcmoment.com.toml"
+dest = "/etc/nginx/conf.d/test.rcmoment.com.conf"
+keys = [
+    "/rcmomentwww"
+]
+check_cmd = "/usr/sbin/nginx -t"
+reload_cmd = "/usr/sbin/nginx -s reload"

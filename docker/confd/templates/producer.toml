@@ -1,0 +1,17 @@
+upstream producer {
+    {{ range getvs "/producer/*" }}
+        server {{ . }};
+    {{ end }} 
+}
+
+server {
+    listen 80;
+    server_name producer.api.tomtop.com;
+
+    location / {
+        proxy_pass http://producer;
+    }
+
+    access_log /data/logs/nginx/producer.api.tomtop.com_access.log json;
+    error_log /data/logs/nginx/producer.api.tomtop.com_error.log;
+}

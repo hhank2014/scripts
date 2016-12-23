@@ -1,0 +1,8 @@
+[template]
+src = "mtest.tomtop.com.toml"
+dest = "/etc/nginx/conf.d/mtest.tomtop.com.conf"
+keys = [
+    "/tomtopm"
+]
+check_cmd = "/usr/sbin/nginx -t"
+reload_cmd = "/usr/sbin/nginx -s reload"

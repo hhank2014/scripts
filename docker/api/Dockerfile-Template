@@ -1,0 +1,10 @@
+FROM 192.168.221.134:5000/tomtop/java:base
+MAINTAINER huangjie 2853718645@qq.com
+
+EXPOSE 8080
+
+ENV MyPro template
+COPY supervisor/$MyPro-supervisord.conf /etc/supervisord.conf
+COPY src/apache-tomcat-8.0.26 /usr/local/tomcat-$MyPro
+
+CMD ["supervisord", "-n"]

@@ -1,0 +1,8 @@
+[template]
+src = "mtest.tooarts.com.toml"
+dest = "/etc/nginx/conf.d/mtest.tooarts.com.conf"
+keys = [
+    "/tooartsm"
+]
+check_cmd = "/usr/sbin/nginx -t"
+reload_cmd = "/usr/sbin/nginx -s reload"

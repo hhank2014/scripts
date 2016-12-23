@@ -1,0 +1,17 @@
+upstream management {
+    {{ range getvs "/management/*" }}
+        server {{ . }};
+    {{ end }} 
+}
+
+server {
+    listen 80;
+    server_name management.api.tomtop.com;
+
+    location / {
+        proxy_pass http://management;
+    }
+
+    access_log /data/logs/nginx/management.api.tomtop.com_access.log json;
+    error_log /data/logs/nginx/management.api.tomtop.com_error.log;
+}

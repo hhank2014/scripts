@@ -1,0 +1,5 @@
+backend = "etcd"
+confdir = "/etc/confd"
+watch = true
+nodes = ["http://localhost:4001","http://localhost:2379"]
+#nodes = ["http://192.168.221.130:4001","http://192.168.221.131:4001","http://192.168.221.132:4001"]

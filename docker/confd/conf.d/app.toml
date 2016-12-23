@@ -1,0 +1,8 @@
+[template]
+src = "app.toml"
+dest = "/etc/nginx/conf.d/app.api.tomtop.com.conf"
+keys = [
+    "/app"
+]
+check_cmd = "/usr/sbin/nginx -t"
+reload_cmd = "/usr/sbin/nginx -s reload"

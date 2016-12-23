@@ -1,0 +1,8 @@
+[template]
+src = "test.lovdock.com.toml"
+dest = "/etc/nginx/conf.d/test.lovdock.com.conf"
+keys = [
+    "/lovdockwww"
+]
+check_cmd = "/usr/sbin/nginx -t"
+reload_cmd = "/usr/sbin/nginx -s reload"

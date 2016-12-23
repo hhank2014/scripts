@@ -1,0 +1,17 @@
+upstream app {
+    {{ range getvs "/app/*" }}
+        server {{ . }};
+    {{ end }} 
+}
+
+server {
+    listen 80;
+    server_name app.api.tomtop.com;
+
+    location / {
+        proxy_pass http://app;
+    }
+
+    access_log /data/logs/nginx/app.api.tomtop.com_access.log json;
+    error_log /data/logs/nginx/app.api.tomtop.com_error.log;
+}

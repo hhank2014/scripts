@@ -1,0 +1,17 @@
+upstream lottery {
+    {{ range getvs "/lottery/*" }}
+        server {{ . }};
+    {{ end }} 
+}
+
+server {
+    listen 80;
+    server_name lottery.api.tomtop.com;
+
+    location / {
+        proxy_pass http://lottery;
+    }
+
+    access_log /data/logs/nginx/lottery.api.tomtop.com_access.log json;
+    error_log /data/logs/nginx/lottery.api.tomtop.com_error.log;
+}

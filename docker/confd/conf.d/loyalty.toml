@@ -1,0 +1,8 @@
+[template]
+src = "loyalty.toml"
+dest = "/etc/nginx/conf.d/loyalty.api.tomtop.com.conf"
+keys = [
+    "/loyalty"
+]
+check_cmd = "/usr/sbin/nginx -t"
+reload_cmd = "/usr/sbin/nginx -s reload"

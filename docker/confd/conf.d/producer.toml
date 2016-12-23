@@ -1,0 +1,8 @@
+[template]
+src = "producer.toml"
+dest = "/etc/nginx/conf.d/producer.api.tomtop.com.conf"
+keys = [
+    "/producer"
+]
+check_cmd = "/usr/sbin/nginx -t"
+reload_cmd = "/usr/sbin/nginx -s reload"

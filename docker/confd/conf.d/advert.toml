@@ -1,0 +1,8 @@
+[template]
+src = "advert.toml"
+dest = "/etc/nginx/conf.d/advert.api.tomtop.com.conf"
+keys = [
+    "/advert"
+]
+check_cmd = "/usr/sbin/nginx -t"
+reload_cmd = "/usr/sbin/nginx -s reload"

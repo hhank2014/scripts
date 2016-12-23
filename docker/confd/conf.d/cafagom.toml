@@ -1,0 +1,8 @@
+[template]
+src = "mtest.cafago.com.toml"
+dest = "/etc/nginx/conf.d/mtest.cafago.com.conf"
+keys = [
+    "/cafagom"
+]
+check_cmd = "/usr/sbin/nginx -t"
+reload_cmd = "/usr/sbin/nginx -s reload"
