@@ -1,0 +1,73 @@
+node (){
+
+    stage("Checkout PHP")
+        dir("${ProjectName}/src/${ProjectName}-com") {
+            git branch: '${ProjectBranch}', url: '${ProjectURL}'
+        }
+    
+    stage('checkout common')
+        dir("${ProjectName}/src/common") {
+            git branch: '${CommonBranch}', url: '${Common}'
+        }
+        
+    stage('checkout vendor')
+        dir("${ProjectName}/src/vendor") {
+            git branch: '${VendorBranch}', url: '${Vendor}'
+        }
+
+    stage("Checkout Dockerfile")
+	dir("${ProjectName}/Dockerfile"){
+	    git branch: '${DockerfileBranch}', url: '${Dockerfile}'
+	}
+
+    stage('Integration')
+	dir("${ProjectName}/Dockerfile") {
+	    sh """
+                if [ -f Dockerfile ];then
+                	rm -f Dockerfile   
+                      	cp Dockerfile-Template Dockerfile
+                else
+                      	cp Dockerfile-Template Dockerfile
+                fi
+    
+                sed -i "s/ENV MyPro template/ENV MyPro ${ProjectName}/g" Dockerfile
+    
+                if [ -f nginx_config/test.${ProjectName}.com.conf ];then
+                	rm -rf nginx_config/test.${ProjectName}.com.conf
+                      	cp nginx_config/template.conf nginx_config/test.${ProjectName}.com.conf
+                else
+                      	cp nginx_config/template.conf nginx_config/test.${ProjectName}.com.conf
+                fi
+                sed -i "s/template/${ProjectName}/g" nginx_config/test.${ProjectName}.com.conf
+        
+                if [ -f php_config/php.ini ];then
+                      	rm -rf php_config/php.ini
+                      	cp php_config/php-template.ini php_config/php.ini
+                else
+                      	cp php_config/php-template.ini php_config/php.ini
+                fi
+                sed -i "s/env = template/env = ${ENV}/g" php_config/php.ini
+
+                if [ -d src ];then
+                        rm -rf src
+                        mkdir src
+                else
+                        mkdir src
+                fi
+
+		cp -r ../src/* ./src/
+		rm -rf ../src
+	    """
+	}
+    stage("Build")
+        dir("${ProjectName}/Dockerfile") {
+	    def MyPro = "${ProjectName}www"
+            def NewBuild = docker.build("192.168.221.134:5000/tomtop/${MyPro}:${ProjectBranch}")
+            NewBuild.push()
+        }
+    stage('Deploy')
+	dir("${ProjectName}/Dockerfile") {
+	    sh 'scp -oUserKnownHostsFile=/dev/null -oStrictHostKeyChecking=no bin/run_container.sh root@${Server}:/tmp/run_container.sh'
+            sh 'ssh -oUserKnownHostsFile=/dev/null -oStrictHostKeyChecking=no root@${Server} "/bin/bash /tmp/run_container.sh ${ProjectName} ${ProjectBranch}"'
+	}
+}
