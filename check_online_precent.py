@@ -71,7 +71,11 @@ def GetOldValue(itemid):
                  return i[0] 
 
 def Result(new,old):
-	return round(abs((new - old)) / old, 4) * 100
+
+        if new > old:
+                return '0'
+        else:
+                return round(abs((new - old)) / old, 4) * 100
 
 if __name__ == "__main__":
 
